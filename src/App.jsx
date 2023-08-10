@@ -1,6 +1,22 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import UrlList from "./components/UrlList";
 import Form from "./components/form";
+
+async function urlShort(url) {
+  const shortUrl = await axios.get(
+    `https://api.shrtco.de/v2/shorten?url=${url}`
+  );
+  // console.log(shortUrl.data.result.full_short_link);
+  return shortUrl.data.result.full_short_link;
+}
+
+function IdGenerate(urls) {
+  const id = urls.reduce((accumulator, value) => {
+    return Math.max(accumulator, value.id);
+  }, 0);
+  return id + 1;
+}
 
 function App() {
   const [urls, setUrls] = useState(() => {
@@ -22,9 +38,9 @@ function App() {
   const handleChange = (e) => {
     setUrl(e.target.value);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUrls([...urls, { id: urls.length + 1, url }]);
+    setUrls([...urls, { id: IdGenerate(urls), url: await urlShort(url) }]);
     setUrl("");
   };
 
@@ -33,7 +49,16 @@ function App() {
     setUrls(newUrls);
   };
 
-  const editUrl = (id) => {};
+  const editUrl = (id, editUrl) => {
+    console.log(editUrl, id);
+    const editedUrl = urls.map((value) => {
+      if (value.id === id) {
+        return { ...value, url: editUrl };
+      }
+      return value;
+    });
+    setUrls(editedUrl);
+  };
 
   return (
     <>

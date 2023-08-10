@@ -1,21 +1,49 @@
 /* eslint-disable react/prop-types */
+
+import { useState } from "react";
+
 // eslint-disable-next-line react/prop-types
-function Url({ url, deleteUrl }) {
+function Url({ url, deleteUrl, editUrl }) {
+  const [editedText, setEditedText] = useState(url.url);
+  const [edit, setEdit] = useState(false);
+  const handleEdit = () => {
+    setEdit(!edit);
+  };
+  const handleChange = (e) => {
+    setEditedText(e.target.value);
+  };
+  const handleSubmit = (e, id, text) => {
+    console.log(id, text);
+    e.preventDefault();
+    editUrl(id, text);
+    setEdit(false);
+  };
+
   return (
     <section>
       <div className="max-w-sm md:max-w-lg mx-auto">
         <ul className>
           <li className="flex space-x-2 justify-between  border p-2 rounded-lg ">
-            <form action="" className=" basis-11/12">
+            <form
+              action=""
+              className=" basis-11/12"
+              onSubmit={(e) => handleSubmit(e, url.id, editedText)}
+            >
               <input
-                className="focus:outline-none focus:border-none md:text-lg md:font-mono bg-transparent"
+                className={`focus:outline-none focus:border-none md:text-lg md:font-mono w-full bg-transparent ${
+                  edit === true ? "bg-green-600" : ""
+                } `}
                 type="text"
-                value={url.url}
-                disabled
+                value={editedText}
+                onChange={handleChange}
+                disabled={!edit}
               />
             </form>
 
-            <button className="px-2 py-1  hover:outline-2 hover:outline outline-offset-2 outline-green-600">
+            <button
+              className="px-2 py-1  hover:outline-2 hover:outline outline-offset-2 outline-green-600"
+              onClick={handleEdit}
+            >
               <svg
                 className="text-xl fill-green-600"
                 xmlns="http://www.w3.org/2000/svg"
