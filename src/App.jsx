@@ -61,14 +61,14 @@ function App() {
   };
 
   return (
-    <>
+    <div className="bg-gray-500">
       <Form
         handleChange={handleChange}
         value={url}
         handleSubmit={handleSubmit}
       />
       <UrlList urls={urls} deleteUrl={deleteUrl} editUrl={editUrl} />
-    </>
+    </div>
   );
 }
 
