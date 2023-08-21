@@ -5,7 +5,7 @@
     1. Short Long Url
     2. Edit the Shorted Url
     3. Delete Url
-    4. last but not least the url store in localStorage
+    4. last but not least all the created url store in localStorage.
 
 ## Technology
 
